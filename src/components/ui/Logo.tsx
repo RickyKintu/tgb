@@ -21,7 +21,7 @@ export function Logo({
 
   return (
     <Link
-      href="#top"
+      href="/#top"
       className={cn("group inline-flex items-center gap-2.5 leading-none", className)}
       aria-label="The Gambling Buddies — home"
     >

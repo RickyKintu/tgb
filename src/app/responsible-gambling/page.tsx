@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { site } from "@/config/site";
 
@@ -53,11 +54,20 @@ const helplines = [
 export default function ResponsibleGamblingPage() {
   return (
     <div className="mx-auto max-w-4xl px-5 py-32 sm:px-8">
-      <SectionHeading
-        eyebrow="18+ · Please read"
-        title="We’d rather you stick around than burn out."
-        description={`${site.name} makes entertainment content about gambling. We are not a gambling operator, we don’t accept wagers, and we don’t hold anyone’s money. If any part of watching, playing along, or chasing a leaderboard spot stops feeling fun, that’s the moment to step back — not push through.`}
-      />
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 text-sm font-medium text-ink-soft transition-colors hover:text-buddy-green"
+      >
+        <span aria-hidden>←</span> Back to {site.shortName}
+      </Link>
+
+      <div className="mt-8">
+        <SectionHeading
+          eyebrow="18+ · Please read"
+          title="We’d rather you stick around than burn out."
+          description={`${site.name} makes entertainment content about gambling. We are not a gambling operator, we don’t accept wagers, and we don’t hold anyone’s money. If any part of watching, playing along, or chasing a leaderboard spot stops feeling fun, that’s the moment to step back — not push through.`}
+        />
+      </div>
 
       <div className="mt-16 grid gap-5 sm:grid-cols-2">
         {tools.map((t) => (

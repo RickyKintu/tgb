@@ -10,9 +10,15 @@ export const site = {
   foundedYear: 2023,
 };
 
+// Leading "/" matters: these are sections on the homepage, so a bare
+// "#bonus" only works while already on "/" — from any other route (e.g.
+// /responsible-gambling) a plain hash link does nothing, since there's no
+// navigation, just an in-page anchor jump with no matching element. "/#bonus"
+// navigates to the homepage first and then jumps to the section, so the nav,
+// footer and buttons all work as a way back home from every page.
 export const nav = [
-  { label: "Bonus", href: "#bonus" },
-  { label: "Leaderboard", href: "#leaderboard" },
+  { label: "Bonus", href: "/#bonus" },
+  { label: "Leaderboard", href: "/#leaderboard" },
 ];
 
 // Only the platforms TGB is actually active on right now — swap these hrefs
@@ -26,10 +32,10 @@ export const socials = [
 
 export const primaryCta = {
   label: "Claim Your Bonus",
-  href: "#bonus",
+  href: "/#bonus",
 };
 
 export const secondaryCta = {
   label: "View Leaderboard",
-  href: "#leaderboard",
+  href: "/#leaderboard",
 };
