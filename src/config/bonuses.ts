@@ -60,13 +60,4 @@ export const dummyOffers: BonusOffer[] = [
     ctaLabel: "Coming Soon",
     comingSoon: true,
   },
-  {
-    slug: "dummy-3",
-    name: "Casino Partner",
-    siteLabel: "COMING SOON",
-    mainBonusTitle: "Partner offer landing soon.",
-    extras: ["Deposit bonus or lossback", "Details drop once the deal is live"],
-    ctaLabel: "Coming Soon",
-    comingSoon: true,
-  },
 ];
