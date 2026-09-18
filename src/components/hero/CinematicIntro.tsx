@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { site } from "@/config/site";
 
 const STORAGE_KEY = "tgb-intro-seen";
@@ -41,11 +42,14 @@ export function CinematicIntro() {
     }
 
     setPhase("mark");
+    // The mark (logo) gets a beat to actually register before handing off —
+    // 700ms fade-in plus a real hold, not an instant cut to the headline.
+    // Every other phase keeps its original hold length, just shifted later.
     const timers = [
-      setTimeout(() => setPhase("reveal"), 950),
-      setTimeout(() => setPhase("tagline"), 2450),
-      setTimeout(() => setPhase("exit"), 3650),
-      setTimeout(() => finish(), 4300),
+      setTimeout(() => setPhase("reveal"), 1200),
+      setTimeout(() => setPhase("tagline"), 2700),
+      setTimeout(() => setPhase("exit"), 3900),
+      setTimeout(() => finish(), 4550),
     ];
     return () => timers.forEach(clearTimeout);
     /* eslint-enable react-hooks/set-state-in-effect */
@@ -68,7 +72,7 @@ export function CinematicIntro() {
       {phase !== "done" && (
         <motion.div
           exit={{ opacity: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
-          className="fixed inset-0 z-[200] flex flex-col items-center justify-center overflow-hidden bg-bg"
+          className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden bg-bg"
         >
           <div className="pointer-events-none absolute inset-0 bg-radial-fade" aria-hidden />
           <div
@@ -77,24 +81,42 @@ export function CinematicIntro() {
             style={{ backgroundImage: "url('/noise.svg')" }}
           />
 
+          {/*
+            Absolutely positioned over the whole overlay (not a flex-col
+            sibling of the headline below) so it sits exactly where the
+            headline sits. The mark fades out in place while the headline
+            fades/slides in on top of it — a real crossfade — instead of the
+            two stacking as separate flex items and shoving each other
+            around for the frame or two they overlap.
+          */}
           <AnimatePresence mode="wait">
             {phase === "mark" && (
               <motion.div
                 key="mark"
                 initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.05, transition: { duration: 0.4 } }}
+                exit={{ opacity: 0, scale: 1.06, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="relative font-display text-6xl tracking-tight text-ink sm:text-7xl"
+                className="absolute inset-0 flex items-center justify-center"
               >
-                TG<span className="text-buddy-green">B</span>
-                <motion.span
-                  aria-hidden
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 -z-10 blur-2xl"
-                  style={{ background: "radial-gradient(circle, rgba(57,255,106,0.35), transparent 70%)" }}
-                />
+                <div className="relative">
+                  {/* Real TGB mark — same asset as the header/footer logo, not the old text wordmark. */}
+                  <Image
+                    src="/images/logo.png"
+                    alt="TGB"
+                    width={132}
+                    height={132}
+                    priority
+                    className="relative drop-shadow-[0_0_24px_rgba(57,255,106,0.5)]"
+                  />
+                  <motion.span
+                    aria-hidden
+                    animate={{ opacity: [0.4, 1, 0.4] }}
+                    transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 -z-10 blur-2xl"
+                    style={{ background: "radial-gradient(circle, rgba(57,255,106,0.35), transparent 70%)" }}
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
