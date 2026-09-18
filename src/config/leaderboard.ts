@@ -23,10 +23,3 @@ export const fallbackLeaderboard: LeaderboardEntry[] = [
   { rank: 4, handle: "pipbets", wagered: 640.2, prize: "$50" },
   { rank: 5, handle: "tinytilt", wagered: 410.9, prize: "$25" },
 ];
-
-export const buddyOfTheMonth = {
-  handle: "duce_",
-  quote: "Started as a viewer. Now I’m the one they clip.",
-  since: "Buddy since Feb 2025",
-  wins: "3x leaderboard champion",
-};

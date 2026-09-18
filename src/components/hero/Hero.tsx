@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { SocialRow } from "@/components/ui/SocialRow";
-import { site, primaryCta } from "@/config/site";
+import { site, primaryCta, secondaryCta } from "@/config/site";
 import { EASE_OUT } from "@/lib/motion";
 
 export function Hero() {
@@ -63,10 +63,13 @@ export function Hero() {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: EASE_OUT, delay: 0.42 }}
-        className="mt-9"
+        className="mt-9 flex flex-wrap items-center justify-center gap-4"
       >
         <Button href={primaryCta.href} size="lg">
           {primaryCta.label}
+        </Button>
+        <Button href={secondaryCta.href} size="lg" variant="secondary">
+          {secondaryCta.label}
         </Button>
       </motion.div>
 

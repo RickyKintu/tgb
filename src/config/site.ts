@@ -31,11 +31,11 @@ export const socials = [
 ];
 
 export const primaryCta = {
-  label: "Claim Your Bonus",
+  label: "Bonuses",
   href: "/#bonus",
 };
 
 export const secondaryCta = {
-  label: "View Leaderboard",
+  label: "Leaderboards",
   href: "/#leaderboard",
 };
