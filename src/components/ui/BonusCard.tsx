@@ -6,7 +6,7 @@ export function BonusCard({ name, siteLabel, mainBonusTitle, extras, code, ctaLa
   return (
     <div
       className={cn(
-        "flex flex-col rounded-3xl border p-7 sm:p-8",
+        "flex h-full flex-col rounded-3xl border p-7 sm:p-8",
         comingSoon
           ? "border-dashed border-bg-line/80 bg-bg-card/40"
           : "border-bg-line bg-bg-card shadow-[0_0_0_1px_rgba(57,255,106,0.04)]"
@@ -56,7 +56,7 @@ export function BonusCard({ name, siteLabel, mainBonusTitle, extras, code, ctaLa
         </div>
       )}
 
-      <div className="mt-7 flex flex-col items-stretch gap-3">
+      <div className="mt-auto flex flex-col items-stretch gap-3 pt-7">
         {code && (
           <div className="flex items-center justify-between rounded-xl border border-bg-line bg-bg/60 px-4 py-2.5 font-mono text-sm">
             <span className="text-ink-dim">Code</span>

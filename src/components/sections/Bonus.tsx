@@ -36,7 +36,7 @@ export async function Bonus() {
 
       <RevealGroup className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {offers.map((offer) => (
-          <Reveal key={offer.slug} as="div">
+          <Reveal key={offer.slug} as="div" className="h-full">
             <BonusCard {...offer} />
           </Reveal>
         ))}
