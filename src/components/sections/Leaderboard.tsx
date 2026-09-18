@@ -125,8 +125,11 @@ export async function Leaderboard() {
         <Reveal className="flex flex-col justify-between rounded-3xl border border-buddy-gold/25 bg-gradient-to-b from-buddy-gold/[0.08] to-transparent p-8">
           <div>
             <Badge tone="gold">Buddy of the Month</Badge>
+            {/* Name always matches #1 on the table to the left (live or
+                fallback) so the two never disagree — only the quote/stats
+                below are static editorial copy. */}
             <p className="mt-6 font-display text-4xl normal-case tracking-tight text-ink">
-              {buddyOfTheMonth.handle}
+              {entries[0]?.handle ?? buddyOfTheMonth.handle}
             </p>
             <p className="mt-4 text-sm italic leading-relaxed text-ink-soft">
               &ldquo;{buddyOfTheMonth.quote}&rdquo;
