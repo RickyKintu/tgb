@@ -19,9 +19,28 @@
 
   body {
     @apply bg-bg text-ink font-sans antialiased;
+    /*
+      The two gradients are the one-off glow behind the hero — no-repeat, so
+      they only ever paint once near the top. (An earlier version of this
+      tried to solve "it goes flat black further down" by tiling more
+      radial-gradient blobs with repeat-y down the whole page, but two soft
+      ellipses with different tile heights drift in and out of phase and
+      can land almost fully transparent at the same scroll position,
+      producing a *worse* dead zone than a single gradient would — visible
+      as a band of plain black around mid-page. Fixed properly instead: each
+      section below (Bonus, Leaderboard, Footer) carries its own local
+      green glow the same way Hero already does, so coverage doesn't depend
+      on fragile tiling math.)
+      The grain layer has no such risk — a plain tiled texture abuts itself
+      edge to edge with no gaps — so it's kept full-page.
+    */
     background-image:
       radial-gradient(70% 50% at 50% -10%, rgba(124, 92, 255, 0.18) 0%, rgba(5, 5, 10, 0) 60%),
-      radial-gradient(50% 40% at 90% 10%, rgba(57, 255, 106, 0.08) 0%, rgba(5, 5, 10, 0) 60%);
+      radial-gradient(50% 40% at 90% 10%, rgba(57, 255, 106, 0.12) 0%, rgba(5, 5, 10, 0) 60%),
+      url("/noise-ambient.svg");
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-position: top, top, top left;
+    background-size: auto, auto, 200px 200px;
   }
 
   ::selection {

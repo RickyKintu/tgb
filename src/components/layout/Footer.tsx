@@ -5,7 +5,9 @@ import { nav, site } from "@/config/site";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-bg-line bg-bg-elevated/60">
+    <footer className="relative isolate border-t border-bg-line bg-bg-elevated/60">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-glow-green opacity-70" />
+
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr_1fr]">
           <div className="max-w-sm">

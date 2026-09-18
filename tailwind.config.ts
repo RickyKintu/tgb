@@ -32,6 +32,11 @@ const config: Config = {
       backgroundImage: {
         "grain": "url('/noise.svg')",
         "radial-fade": "radial-gradient(60% 60% at 50% 0%, rgba(124,92,255,0.25) 0%, rgba(5,5,10,0) 70%)",
+        // Reusable ambient glow for section backgrounds further down the
+        // page — sized/positioned per usage via className, same shape
+        // every time so the whole page reads as one lit environment
+        // instead of the hero being the only section with any color.
+        "glow-green": "radial-gradient(55% 55% at 50% 50%, rgba(57,255,106,0.16) 0%, rgba(5,5,10,0) 70%)",
       },
       keyframes: {
         marquee: {

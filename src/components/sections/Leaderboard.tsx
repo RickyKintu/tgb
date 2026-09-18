@@ -78,7 +78,9 @@ export async function Leaderboard() {
   const sources = await getSources();
 
   return (
-    <section id="leaderboard" className="relative mx-auto max-w-4xl px-5 py-24 sm:px-8 sm:py-32">
+    <section id="leaderboard" className="relative isolate mx-auto max-w-4xl px-5 py-24 sm:px-8 sm:py-32">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-glow-green" />
+
       <SectionHeading
         eyebrow="Buddy Leaderboard"
         title="Climb it. Get paid for climbing it."
