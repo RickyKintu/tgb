@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Logo } from "@/components/ui/Logo";
-import { nav, primaryCta } from "@/config/site";
-import { Button } from "@/components/ui/Button";
+import { nav } from "@/config/site";
 import { MobileMenu } from "./MobileMenu";
 import { cn } from "@/lib/utils";
 
@@ -40,12 +39,6 @@ export function Navbar() {
             </a>
           ))}
         </nav>
-
-        <div className="hidden items-center gap-3 lg:flex">
-          <Button href={primaryCta.href} size="md">
-            {primaryCta.label}
-          </Button>
-        </div>
 
         <button
           type="button"
