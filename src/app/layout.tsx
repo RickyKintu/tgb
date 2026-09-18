@@ -11,6 +11,7 @@ import { SkipLink } from "@/components/layout/SkipLink";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AgeGate } from "@/components/layout/AgeGate";
+import { CinematicIntro } from "@/components/hero/CinematicIntro";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -48,9 +49,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  icons: {
-    icon: "/icon",
-  },
+  // No manual `icons` entry: src/app/icon.png and src/app/apple-icon.png
+  // (the real TGB logo) are picked up automatically by Next's file
+  // convention.
 };
 
 export const viewport: Viewport = {
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <SkipLink />
+        <CinematicIntro />
         <AgeGate />
         <Navbar />
         <main id="main-content">{children}</main>

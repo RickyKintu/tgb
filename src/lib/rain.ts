@@ -68,14 +68,31 @@ export async function getRainRaces({
     return [];
   }
 
+  const url = `${RAIN_API_BASE}/affiliates/races?participant_count=${participantCount}`;
+  const headers = { "x-api-key": apiKey };
+
   try {
-    const res = await fetch(`${RAIN_API_BASE}/affiliates/races?participant_count=${participantCount}`, {
-      headers: { "x-api-key": apiKey },
-      next: { revalidate: 600 },
-    });
+    let res = await fetch(url, { headers, next: { revalidate: 600 } });
+
+    // A transient failure (Rain.gg's rate limit, a brief network hiccup)
+    // would otherwise get cached by Next's Data Cache as "the answer" for
+    // the full 10-minute window, holding the whole site on fallback data
+    // long after Rain.gg itself has recovered. Retry once, uncached,
+    // before giving up — this keeps the 10-minute cache for the success
+    // path (which is what actually protects Rain.gg's rate limit) while
+    // not letting one bad request poison it.
+    if (!res.ok) {
+      console.error(`[rain] races request failed (attempt 1): HTTP ${res.status}`);
+      // Plain `cache: "no-store"` here would make Next treat this whole
+      // route as dynamic (opting it out of static generation/ISR) the
+      // moment this retry path is ever exercised during a build — so the
+      // retry still uses `next.revalidate`, just a much shorter window,
+      // instead of disabling caching outright.
+      res = await fetch(url, { headers, next: { revalidate: 60 } });
+    }
 
     if (!res.ok) {
-      console.error(`[rain] races request failed: HTTP ${res.status}`);
+      console.error(`[rain] races request failed (attempt 2): HTTP ${res.status}`);
       return [];
     }
 
