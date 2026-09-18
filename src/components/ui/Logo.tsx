@@ -1,30 +1,43 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 
-export function Logo({ className, size = "md" }: { className?: string; size?: "sm" | "md" | "lg" }) {
-  const sizes = {
-    sm: "text-xl",
-    md: "text-2xl",
-    lg: "text-4xl",
-  };
+const sizes = {
+  sm: { img: 36, text: "text-lg" },
+  md: { img: 46, text: "text-2xl" },
+  lg: { img: 68, text: "text-4xl" },
+};
+
+export function Logo({
+  className,
+  size = "md",
+  wordmark = false,
+}: {
+  className?: string;
+  size?: "sm" | "md" | "lg";
+  wordmark?: boolean;
+}) {
+  const s = sizes[size];
 
   return (
     <Link
       href="#top"
-      className={cn(
-        "group inline-flex items-center gap-2 font-display leading-none tracking-tight",
-        sizes[size],
-        className
-      )}
+      className={cn("group inline-flex items-center gap-2.5 leading-none", className)}
       aria-label="The Gambling Buddies — home"
     >
-      <span className="flex items-center">
-        <span className="text-ink">TG</span>
-        <span className="relative text-buddy-green">
-          B
-          <span className="absolute -right-1 -top-1 h-1.5 w-1.5 rounded-full bg-buddy-green shadow-glow transition-transform duration-300 group-hover:scale-125" />
+      <Image
+        src="/images/logo.png"
+        alt=""
+        width={s.img}
+        height={s.img}
+        className="shrink-0 drop-shadow-[0_0_14px_rgba(57,255,106,0.45)] transition-transform duration-300 group-hover:scale-105"
+        priority
+      />
+      {wordmark && (
+        <span className={cn("font-display tracking-tight text-ink", s.text)}>
+          TG<span className="text-buddy-green">B</span>
         </span>
-      </span>
+      )}
     </Link>
   );
 }

@@ -11,7 +11,6 @@ import { SkipLink } from "@/components/layout/SkipLink";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AgeGate } from "@/components/layout/AgeGate";
-import { CinematicIntro } from "@/components/hero/CinematicIntro";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -66,15 +65,11 @@ const jsonLd = {
   name: "The Gambling Buddies",
   alternateName: "TGB",
   url: "https://thegamblingbuddies.com",
-  description:
-    "A creator-led gambling entertainment brand: live streams, leaderboards, giveaways, rewards and community.",
+  description: "A creator-led gambling entertainment brand: claim the bonus, climb the leaderboard.",
   sameAs: [
-    "https://twitch.tv/thegamblingbuddies",
-    "https://kick.com/thegamblingbuddies",
-    "https://youtube.com/@thegamblingbuddies",
-    "https://tiktok.com/@thegamblingbuddies",
     "https://instagram.com/thegamblingbuddies",
-    "https://x.com/tgb",
+    "https://x.com/thegamblingbuddies",
+    "https://kick.com/thegamblingbuddies",
     "https://discord.gg/tgb",
   ],
 };
@@ -88,7 +83,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <SkipLink />
-        <CinematicIntro />
         <AgeGate />
         <Navbar />
         <main id="main-content">{children}</main>

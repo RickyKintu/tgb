@@ -1,23 +1,27 @@
 export type LeaderboardEntry = {
   rank: number;
   handle: string;
-  points: number;
+  wagered: number;
   prize: string;
-  trend: "up" | "down" | "same";
 };
 
 export const leaderboardSeason = "SEASON 4 · WEEK 3";
-export const leaderboardCountdown = "2026-09-22T23:59:59-04:00";
 
-export const leaderboard: LeaderboardEntry[] = [
-  { rank: 1, handle: "duce_", points: 284120, prize: "$2,500 + Buddy Ring", trend: "same" },
-  { rank: 2, handle: "notmadsy", points: 251800, prize: "$1,500", trend: "up" },
-  { rank: 3, handle: "xREN99", points: 198340, prize: "$1,000", trend: "up" },
-  { rank: 4, handle: "pipbets", points: 176420, prize: "$500", trend: "down" },
-  { rank: 5, handle: "tinytilt", points: 154990, prize: "$250", trend: "up" },
-  { rank: 6, handle: "lola.live", points: 132110, prize: "$150", trend: "same" },
-  { rank: 7, handle: "gremlin_gg", points: 118700, prize: "$100", trend: "down" },
-  { rank: 8, handle: "buddyof2024", points: 109450, prize: "$100", trend: "up" },
+// How many positions to show. Passed to Rain.gg as `participant_count`.
+export const leaderboardParticipantCount = 5;
+
+// Shown if the live Rain.gg race can't be reached (no API key configured,
+// request failed, no active race, etc.) — used as-is, plus the countdown
+// and code/description below, so the section never renders empty.
+export const leaderboardCountdown = "2026-09-22T23:59:59-04:00";
+export const fallbackRaceCode = "TGB";
+export const fallbackRaceDescription = "Apply code TGB to win!";
+export const fallbackLeaderboard: LeaderboardEntry[] = [
+  { rank: 1, handle: "duce_", wagered: 1842.5, prize: "$250" },
+  { rank: 2, handle: "notmadsy", wagered: 1390, prize: "$100" },
+  { rank: 3, handle: "xREN99", wagered: 980.75, prize: "$75" },
+  { rank: 4, handle: "pipbets", wagered: 640.2, prize: "$50" },
+  { rank: 5, handle: "tinytilt", wagered: 410.9, prize: "$25" },
 ];
 
 export const buddyOfTheMonth = {

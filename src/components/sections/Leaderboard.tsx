@@ -2,18 +2,63 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { Badge } from "@/components/ui/Badge";
 import { Countdown } from "@/components/ui/Countdown";
-import { leaderboard, leaderboardSeason, leaderboardCountdown, buddyOfTheMonth } from "@/config/leaderboard";
-import { formatNumber } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import {
+  fallbackLeaderboard,
+  fallbackRaceCode,
+  fallbackRaceDescription,
+  leaderboardCountdown,
+  leaderboardParticipantCount,
+  leaderboardSeason,
+  buddyOfTheMonth,
+  type LeaderboardEntry,
+} from "@/config/leaderboard";
+import { getRainRaces, pickFeaturedRace } from "@/lib/rain";
+import { cn, formatUSD } from "@/lib/utils";
 
-const trendGlyph = { up: "▲", down: "▼", same: "—" } as const;
-const trendColor = {
-  up: "text-buddy-green",
-  down: "text-buddy-pink",
-  same: "text-ink-dim",
-} as const;
+type BoardData = {
+  entries: LeaderboardEntry[];
+  endsAt: string;
+  raceCode: string;
+  raceDescription: string;
+  isLive: boolean;
+};
 
-export function Leaderboard() {
+async function getLeaderboardData(): Promise<BoardData> {
+  const races = await getRainRaces({ participantCount: leaderboardParticipantCount });
+  const race = pickFeaturedRace(races);
+
+  if (!race || race.participants.length === 0) {
+    return {
+      entries: fallbackLeaderboard,
+      endsAt: leaderboardCountdown,
+      raceCode: fallbackRaceCode,
+      raceDescription: fallbackRaceDescription,
+      isLive: false,
+    };
+  }
+
+  const entries: LeaderboardEntry[] = [...race.participants]
+    .sort((a, b) => a.position - b.position)
+    .slice(0, leaderboardParticipantCount)
+    .map((p) => ({
+      rank: p.position,
+      handle: p.username,
+      wagered: p.wagered,
+      prize: formatUSD(p.prize / 100),
+    }));
+
+  return {
+    entries,
+    endsAt: race.ends_at,
+    raceCode: race.code,
+    raceDescription: race.description,
+    isLive: true,
+  };
+}
+
+export async function Leaderboard() {
+  const { entries, endsAt, raceCode, raceDescription, isLive } = await getLeaderboardData();
+
   return (
     <section id="leaderboard" className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
       <div className="grid gap-14 lg:grid-cols-[1.5fr_1fr] lg:gap-10">
@@ -22,15 +67,18 @@ export function Leaderboard() {
             <SectionHeading
               eyebrow="Buddy Leaderboard"
               title="Climb it. Get paid for climbing it."
-              description="Every wager counts toward the weekly board. Top eight split real prizes — no minimum follower count, no favorites."
+              description={`${raceDescription} Top ${entries.length} split real prizes — no minimum follower count, no favorites.`}
             />
           </div>
 
           <Reveal className="mt-8 flex flex-wrap items-center gap-4">
-            <Badge tone="green">{leaderboardSeason}</Badge>
+            <Badge tone="green" pulse={isLive}>
+              {isLive ? "Live now" : leaderboardSeason}
+            </Badge>
+            <Badge tone="gold">Use code {raceCode}</Badge>
             <div className="flex items-center gap-2 text-xs text-ink-dim">
               <span>Resets in</span>
-              <Countdown target={leaderboardCountdown} />
+              <Countdown target={endsAt} />
             </div>
           </Reveal>
 
@@ -40,12 +88,12 @@ export function Leaderboard() {
                 <tr className="border-b border-bg-line bg-bg-elevated text-xs uppercase tracking-widest text-ink-dim">
                   <th className="px-5 py-3 font-medium">Rank</th>
                   <th className="px-5 py-3 font-medium">Buddy</th>
-                  <th className="hidden px-5 py-3 font-medium sm:table-cell">Points</th>
+                  <th className="hidden px-5 py-3 font-medium sm:table-cell">Wagered</th>
                   <th className="px-5 py-3 font-medium">Prize</th>
                 </tr>
               </thead>
               <tbody>
-                {leaderboard.map((entry) => (
+                {entries.map((entry) => (
                   <tr
                     key={entry.rank}
                     className={cn(
@@ -58,19 +106,20 @@ export function Leaderboard() {
                     </td>
                     <td className="px-5 py-4 font-medium text-ink">{entry.handle}</td>
                     <td className="hidden px-5 py-4 font-mono tabular-nums text-ink-soft sm:table-cell">
-                      {formatNumber(entry.points)}
+                      {formatUSD(entry.wagered)}
                     </td>
-                    <td className="px-5 py-4">
-                      <span className="text-ink-soft">{entry.prize}</span>
-                      <span className={cn("ml-2 inline-block text-xs", trendColor[entry.trend])} aria-hidden>
-                        {trendGlyph[entry.trend]}
-                      </span>
-                    </td>
+                    <td className="px-5 py-4 text-ink-soft">{entry.prize}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </Reveal>
+
+          <p className="mt-4 text-xs text-ink-dim">
+            {isLive
+              ? "Live wager data via Rain.gg, refreshed every few minutes."
+              : "Showing placeholder standings — connect a live race to replace this."}
+          </p>
         </div>
 
         <Reveal className="flex flex-col justify-between rounded-3xl border border-buddy-gold/25 bg-gradient-to-b from-buddy-gold/[0.08] to-transparent p-8">
